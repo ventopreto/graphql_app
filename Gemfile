@@ -31,5 +31,4 @@ gem "graphql", "~> 2.3"
 gem "graphiql-rails"
 
 # Rabbit
-gem "sneakers"
 gem "bunny", ">= 2.19.0"
