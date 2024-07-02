@@ -20,6 +20,10 @@ group :development do
   gem "spring"
 end
 
+group :test do
+  gem "bunny-mock"
+end
+
 gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # graphql
@@ -27,5 +31,4 @@ gem "graphql", "~> 2.3"
 gem "graphiql-rails"
 
 # Rabbit
-gem "sneakers"
 gem "bunny", ">= 2.19.0"
