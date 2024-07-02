@@ -9,9 +9,7 @@ module Mutations
     argument :policy_input, Types::PolicyInputType, required: true
 
     def resolve(policy_input:)
-      {
-        message: "Policy created"
-      }
+      Producer.publish(policy_input)
     end
   end
 end
