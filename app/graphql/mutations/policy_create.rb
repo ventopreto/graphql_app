@@ -14,5 +14,13 @@ module Mutations
         message: "Policy created"
       }
     end
+
+    def self.authorized?(obj, context)
+      super && if context[:authencicated?]
+        true
+      else
+        raise GraphQL::ExecutionError, "Not Authenticated"
+      end
+    end
   end
 end

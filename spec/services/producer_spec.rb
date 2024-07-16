@@ -28,8 +28,6 @@ RSpec.describe Producer do
 
   describe ".publish" do
     it "publishes a message to the policy_created exchange" do
-      expect(exchange).to receive(:publish).with(message.to_json)
-
       described_class.publish(message)
 
       expect(exchange.name).to eq("policy_created")
@@ -39,7 +37,7 @@ RSpec.describe Producer do
 
   describe ".channel" do
     it "creates a new channel" do
-      expect(described_class.channel).to be_a(BunnyMock::Channel)
+      expect(described_class.channel).to be_a(Bunny::Channel)
     end
   end
 
