@@ -9,6 +9,7 @@ gem "puma", "~> 5.0"
 gem "bootsnap", ">= 1.4.4", require: false
 gem "devise"
 gem "devise-jwt"
+gem "faraday"
 
 group :development, :test do
   gem "standard"
