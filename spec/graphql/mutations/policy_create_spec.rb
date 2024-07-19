@@ -1,4 +1,5 @@
 require "rails_helper"
+require "devise/jwt/test_helpers"
 
 RSpec.describe "Policy", type: :request do
   context "Mutation policy" do
@@ -19,9 +20,30 @@ RSpec.describe "Policy", type: :request do
       GRAPHQL
     end
 
-    context "when valid" do
+    context "when not authenticated" do
+      it "raise an error saying Not Authenticated" do
+        result = MyappSchema.execute(query_string, context: {authencicated?: false}, variables: {
+          start_date_coverage: "1994-10-05",
+          end_date_coverage: "1998-11-10",
+          vehicle: {
+            brand: "Ford",
+            model: "Falcon GT",
+            year: "1973",
+            registration_plate: "Interceptor-v6"
+          },
+          insured: {
+            name: "Mad Max",
+            cpf: "96151218000"
+          }
+        })
+
+        expect(result["errors"].first["message"]).to eq("Not Authenticated")
+      end
+    end
+
+    context "when authenticated and valid" do
       it "create a policy" do
-        result = MyappSchema.execute(query_string, variables: {
+        result = MyappSchema.execute(query_string, context: {authencicated?: true}, variables: {
           start_date_coverage: "1994-10-05",
           end_date_coverage: "1998-11-10",
           vehicle: {
