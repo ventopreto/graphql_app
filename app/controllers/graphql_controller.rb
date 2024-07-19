@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 class GraphqlController < ApplicationController
-  before_action :verify_token
-  # If accessing from outside this domain, nullify the session
-  # This allows for outside API access while preventing CSRF attacks,
-  # but you'll have to authenticate your user separately
-  # protect_from_forgery with: :null_session
+  before_action :authenticated?
+  rescue_from JWT::DecodeError, with: :decode_error
+  rescue_from JWT::VerificationError, with: :invalid_token
+  rescue_from JWT::ExpiredSignature, with: :expiration_error
 
   def execute
     variables = prepare_variables(params[:variables])
@@ -21,18 +20,24 @@ class GraphqlController < ApplicationController
 
   private
 
-  def verify_token
+  def authenticated?
     @token = request.headers["Authorization"]&.split(" ")&.last
-    nil if @token.blank?
-
-    @token
-  end
-
-  def authencicated?
     jwt_payload = Warden::JWTAuth::TokenDecoder.new.call(@token)
     jwt_payload["sub"].present?
-  rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
-    false
+  end
+
+  def invalid_token
+    render json: {errors: [{message: "Erro ao verificar token: O token é inválido ou modificado"}]},
+      status: 401
+  end
+
+  def decode_error
+    render json: {errors: [{message: "Erro ao decodificar token: formato inválido ou token inexistente."}]},
+      status: 401
+  end
+
+  def expiration_error
+    render json: {errors: [{message: "Token expirado, recrie o token e tente novamente"}]}, status: 401
   end
 
   # Handle variables in form data, JSON body, or a blank value
