@@ -10,7 +10,7 @@ class GraphqlController < ApplicationController
     variables = prepare_variables(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
-    context = {authenticated?: authenticated?, token: @token}
+    context = {authenticated?: authenticated?}
     result = MyappSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
   rescue => e
