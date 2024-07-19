@@ -7,12 +7,15 @@ gem "rails", "~> 6.1.7", ">= 6.1.7.8"
 gem "pg", "~> 1.1"
 gem "puma", "~> 5.0"
 gem "bootsnap", ">= 1.4.4", require: false
+gem "devise"
+gem "devise-jwt"
 
 group :development, :test do
   gem "standard"
   gem "standard-rails"
   gem "pry-byebug", platforms: [:mri, :mingw, :x64_mingw]
   gem "rspec-rails", "~> 4.1.2"
+  gem "dotenv"
 end
 
 group :development do

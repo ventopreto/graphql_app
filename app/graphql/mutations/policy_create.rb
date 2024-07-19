@@ -11,5 +11,13 @@ module Mutations
     def resolve(policy_input:)
       Producer.publish(policy_input)
     end
+
+    def self.authorized?(obj, context)
+      super && if context[:authencicated?]
+        true
+      else
+        raise GraphQL::ExecutionError, "Not Authenticated"
+      end
+    end
   end
 end
