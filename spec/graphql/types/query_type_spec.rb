@@ -22,7 +22,7 @@ RSpec.describe "Policy", type: :request do
 
     context "when not authenticated" do
       it "raise an error saying Not Authenticated" do
-        result = MyappSchema.execute(query_string, context: {authencicated?: false}, variables: {id: 1})
+        result = MyappSchema.execute(query_string, context: {authenticated?: false}, variables: {id: 1})
 
         expect(result["errors"].first["message"]).to eq("Not Authenticated")
       end
@@ -32,7 +32,7 @@ RSpec.describe "Policy", type: :request do
       before { allow(Faraday).to receive(:get).and_return(response) }
 
       it "raise an error saying Not Authenticated" do
-        result = MyappSchema.execute(query_string, context: {authencicated?: true}, variables: {id: 3})
+        result = MyappSchema.execute(query_string, context: {authenticated?: true}, variables: {id: 3})
 
         expect(result["data"]["getPolicy"]["insured"]["cpf"]).to eq("23456789012")
         expect(result["data"]["getPolicy"]["insured"]["name"]).to eq("Bo Duke")

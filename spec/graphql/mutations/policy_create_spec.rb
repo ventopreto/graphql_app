@@ -22,7 +22,7 @@ RSpec.describe "Policy", type: :request do
 
     context "when not authenticated" do
       it "raise an error saying Not Authenticated" do
-        result = MyappSchema.execute(query_string, context: {authencicated?: false}, variables: {
+        result = MyappSchema.execute(query_string, context: {authenticated?: false}, variables: {
           start_date_coverage: "1994-10-05",
           end_date_coverage: "1998-11-10",
           vehicle: {
@@ -43,7 +43,7 @@ RSpec.describe "Policy", type: :request do
 
     context "when authenticated and valid" do
       it "create a policy" do
-        result = MyappSchema.execute(query_string, context: {authencicated?: true}, variables: {
+        result = MyappSchema.execute(query_string, context: {authenticated?: true}, variables: {
           start_date_coverage: "1994-10-05",
           end_date_coverage: "1998-11-10",
           vehicle: {
