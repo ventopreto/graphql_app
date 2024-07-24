@@ -13,7 +13,7 @@ module Mutations
     end
 
     def self.authorized?(obj, context)
-      super && if context[:authencicated?]
+      super && if context[:authenticated?]
         true
       else
         raise GraphQL::ExecutionError, "Not Authenticated"

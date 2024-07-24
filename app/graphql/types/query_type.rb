@@ -26,5 +26,32 @@ module Types
     def test_field
       "Hello World!"
     end
+
+    field :get_policy, Types::PolicyResponseType, null: false, description: "Fetch policy for some id" do
+      argument :id, ID, required: true
+    end
+
+    def get_policy(id:)
+      headers = {Authorization: "Bearer #{context[:token]}"}
+      response = Faraday.get("http://rest_app:3001/api/v1/policy/#{id}", nil, headers)
+      parsed_response(response)
+    end
+
+    def self.authorized?(obj, context)
+      super && if context[:authenticated?]
+        true
+      else
+        raise GraphQL::ExecutionError, "Not Authenticated"
+      end
+    end
+
+    private
+
+    def parsed_response(response)
+      return response.body if response.status == 401
+      json = JSON.parse(response.body, symbolize_names: true)[:payload]
+      json[:policy] = {id: json.delete(:policy_id), end_date_coverage: json.delete(:end_date_coverage), start_date_coverage: json.delete(:start_date_coverage)}
+      json
+    end
   end
 end
