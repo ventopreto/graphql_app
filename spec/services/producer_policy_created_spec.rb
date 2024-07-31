@@ -1,7 +1,7 @@
 require "rails_helper"
 require "bunny-mock"
 
-RSpec.describe Producer do
+RSpec.describe ProducerPolicyCreated do
   let(:connection) { BunnyMock.new }
   let(:channel) { connection.create_channel }
   let(:exchange) { channel.fanout("policy_created") }
@@ -65,7 +65,7 @@ RSpec.describe Producer do
 
   describe ".channel" do
     it "creates a new channel" do
-      expect(described_class.channel).to be_a(Bunny::Channel)
+      expect(described_class.channel).to be_a(BunnyMock::Channel)
     end
   end
 
