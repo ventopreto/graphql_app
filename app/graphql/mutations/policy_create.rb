@@ -9,7 +9,7 @@ module Mutations
     argument :policy_input, Types::PolicyInputType, required: true
 
     def resolve(policy_input:)
-      Producer.publish(policy_input)
+      ProducerPolicyCreated.publish(policy_input)
     end
 
     def self.authorized?(obj, context)
